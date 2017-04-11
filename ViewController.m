@@ -33,16 +33,20 @@
     self.tableView.dataSource = self;
 }
 
+#pragma  mark - tableView数据源方法
+#pragma  mark - 设置section
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return persons.count;
 }
 
+#pragma  mark - 行高
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 70;
 }
 
+#pragma  mark - 设置cell 显示的内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -59,6 +63,28 @@
     
     return cell;
 }
+
+#pragma mark 选择某行后调用的方法
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //创建提示框
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"你被选中了!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+    //设置AlertView的风格为能显示的输入框
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    Person *p = [[Person alloc]init];
+    p = self.persons[indexPath.row];
+    [alert textFieldAtIndex:0].text = p.name;
+    alert.tag = indexPath.row;
+    
+    [alert show];
+}
+#pragma mark 取消某行后调用的方法
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"取消第%d行",indexPath.row+1);
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
